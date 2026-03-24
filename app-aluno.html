@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>CCAM - App Aluno</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+      /* Estilos específicos para simular App Mobile */
+      body {
+        padding-bottom: 80px; /* Espaço para a barra inferior */
+      }
+      
+      /* Ajuste da Topbar para Mobile */
+      .app-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+        background: rgba(7,11,20,.95);
+        backdrop-filter: blur(10px);
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        border-bottom: 1px solid var(--border);
+      }
+      
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--brand);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #fff;
+      }
+
+      /* Cards de Exercício */
+      .exercise-card {
+        display: flex;
+        gap: 12px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 12px;
+        margin-bottom: 12px;
+        align-items: center;
+      }
+      .exercise-img {
+        width: 80px;
+        height: 80px;
+        border-radius: 12px;
+        background-color: #2a2a2a;
+        object-fit: cover;
+        flex-shrink: 0;
+      }
+      .exercise-info h3 {
+        margin: 0 0 4px 0;
+        font-size: 16px;
+      }
+      .exercise-meta {
+        font-size: 13px;
+        color: var(--muted);
+        display: flex;
+        gap: 10px;
+      }
+      .check-btn {
+        margin-left: auto;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid var(--border);
+        background: transparent;
+        cursor: pointer;
+      }
+      .check-btn.checked {
+        background: var(--brand-2);
+        border-color: var(--brand-2);
+      }
+
+      /* Barra de Navegação Inferior */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #0f1623;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-around;
+        padding: 12px 0;
+        z-index: 40;
+        padding-bottom: max(12px, env(safe-area-inset-bottom));
+      }
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        font-size: 10px;
+        color: var(--muted);
+        text-decoration: none;
+      }
+      .nav-item.active {
+        color: var(--brand);
+      }
+      .nav-icon {
+        font-size: 20px;
+      }
+
+      /* Tutorial Overlay */
+      .tutorial-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.85);
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        text-align: center;
+        backdrop-filter: blur(5px);
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- Tutorial (Simulação: Aparece se for primeiro acesso) -->
+    <div id="tutorial" class="tutorial-overlay">
+      <div style="font-size: 40px; margin-bottom: 20px;">👋</div>
+      <h2>Bem-vindo ao App CCAM!</h2>
+      <p style="color: var(--muted); margin-bottom: 30px;">Aqui você acompanha seus treinos, financeiro e novidades da academia na palma da mão.</p>
+      <button class="btn btn--brand" onclick="document.getElementById('tutorial').style.display='none'">Começar Agora</button>
+    </div>
+
+    <!-- Header Mobile -->
+    <header class="app-header">
+      <div class="user-profile">
+        <div class="avatar">A</div>
+        <div>
+          <div style="font-size: 12px; color: var(--muted);">Olá, Aluno</div>
+          <div style="font-weight: bold;">Bom treino!</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 15px; align-items: center;">
+        <a href="#" style="font-size: 20px; text-decoration: none;">🔔</a>
+        <a href="#" data-logout style="font-size: 20px; text-decoration: none;" title="Sair">🚪</a>
+      </div>
+    </header>
+
+    <main class="container" style="padding-top: 20px;">
+      
+      <!-- Card de Status / Personal Automático -->
+      <section class="card" style="background: linear-gradient(135deg, var(--brand), #4c1d95); border: none; margin-bottom: 20px;">
+        <h2 style="color: #fff;">Seu Perfil</h2>
+        <p style="color: rgba(255,255,255,0.8);">Categoria: <strong>Peso Normal</strong></p>
+        <div style="margin-top: 10px; font-size: 13px; color: rgba(255,255,255,0.9);">
+          💪 Nível de Força: 1.4 (Intermediário)<br>
+          🎯 Foco sugerido: Hipertrofia
+        </div>
+      </section>
+
+      <h3 style="margin-bottom: 15px;">Treino de Hoje (Peito e Tríceps)</h3>
+
+      <!-- Lista de Exercícios -->
+      <div class="exercise-list">
+        <!-- Item 1 -->
+        <article class="exercise-card">
+          <!-- Placeholder de imagem (simulando foto do exercício) -->
+          <img src="https://placehold.co/80x80/1e1e1e/FFF?text=Supino" class="exercise-img" alt="Supino">
+          <div class="exercise-info">
+            <h3>Supino Reto</h3>
+            <div class="exercise-meta">
+              <span>4 Séries</span> • <span>12 Reps</span>
+            </div>
+            <div style="font-size: 12px; color: var(--brand-2); margin-top: 4px;">Carga Sugerida: 22kg</div>
+          </div>
+          <button class="check-btn" onclick="this.classList.toggle('checked')"></button>
+        </article>
+
+        <!-- Item 2 -->
+        <article class="exercise-card">
+          <img src="https://placehold.co/80x80/1e1e1e/FFF?text=Crucifixo" class="exercise-img" alt="Crucifixo">
+          <div class="exercise-info">
+            <h3>Crucifixo Inclinado</h3>
+            <div class="exercise-meta">
+              <span>3 Séries</span> • <span>15 Reps</span>
+            </div>
+            <div style="font-size: 12px; color: var(--brand-2); margin-top: 4px;">Carga Sugerida: 14kg</div>
+          </div>
+          <button class="check-btn" onclick="this.classList.toggle('checked')"></button>
+        </article>
+
+        <!-- Item 3 -->
+        <article class="exercise-card">
+          <img src="https://placehold.co/80x80/1e1e1e/FFF?text=Triceps" class="exercise-img" alt="Triceps">
+          <div class="exercise-info">
+            <h3>Tríceps Corda</h3>
+            <div class="exercise-meta">
+              <span>4 Séries</span> • <span>10 Reps</span>
+            </div>
+            <div style="font-size: 12px; color: var(--brand-2); margin-top: 4px;">Carga Sugerida: 35kg</div>
+          </div>
+          <button class="check-btn" onclick="this.classList.toggle('checked')"></button>
+        </article>
+      </div>
+
+    </main>
+
+    <!-- Navegação Inferior -->
+    <nav class="bottom-nav">
+      <a href="#" class="nav-item active">
+        <span class="nav-icon">🏋️</span>
+        <span>Treino</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="nav-icon">📅</span>
+        <span>Agenda</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="nav-icon">📢</span>
+        <span>Mural</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="nav-icon">💲</span>
+        <span>Finan.</span>
+      </a>
+    </nav>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

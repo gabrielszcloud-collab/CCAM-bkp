@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CCAM - Cadastro</title>
+    <meta name="description" content="Cadastro no CCAM." />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a class="brand" href="index.html">
+          <span class="logo" aria-hidden="true"></span>
+          <span class="brand__text">
+            <span class="brand__name">CCAM</span>
+            <span class="brand__tag">Controle & acompanhamento</span>
+          </span>
+        </a>
+
+        <nav class="nav" data-nav aria-label="Navegação principal">
+          <a href="index.html">Início</a>
+          <a href="cadastro.html">Cadastro</a>
+          <a href="treinos.html">Treinos</a>
+          <a href="financeiro.html">Financeiro</a>
+          <a href="empresa.html">Empresa</a>
+          <a href="mural.html">Mural</a>
+          <a href="crm.html">CRM</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <section class="hero">
+          <h1>Cadastro de Alunos</h1>
+          <p>Registre novos alunos no sistema. Os dados serão salvos diretamente no banco de dados.</p>
+        </section>
+
+        <section class="grid grid--2">
+          <article class="card" style="grid-column: span 2;">
+            <h2>Preencha os dados</h2>
+            <form id="formCadastro">
+              <div class="row">
+                <div class="field">
+                  <label for="nome">Nome Completo *</label>
+                  <input id="nome" type="text" required />
+                </div>
+                <div class="field">
+                  <label for="cpf">CPF *</label>
+                  <input id="cpf" type="text" required placeholder="000.000.000-00" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="field">
+                  <label for="email">E-mail *</label>
+                  <input id="email" type="email" required placeholder="aluno@email.com" />
+                </div>
+                <div class="field">
+                  <label for="data_nascimento">Data de Nascimento</label>
+                  <input id="data_nascimento" type="date" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="field">
+                  <label for="celular">Celular *</label>
+                  <input id="celular" type="tel" required placeholder="(00) 00000-0000" />
+                </div>
+                <div class="field">
+                  <label for="telefone_fixo">Telefone Fixo</label>
+                  <input id="telefone_fixo" type="tel" placeholder="(00) 0000-0000" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="field">
+                  <label for="peso">Peso (kg)</label>
+                  <input id="peso" type="number" step="0.1" placeholder="Ex: 75.5" />
+                </div>
+                <div class="field">
+                  <label for="altura">Altura (m)</label>
+                  <input id="altura" type="number" step="0.01" placeholder="Ex: 1.75" />
+                </div>
+                <div class="field">
+                  <label for="sexo">Sexo</label>
+                  <select id="sexo">
+                    <option value="M">Masculino</option>
+                    <option value="F">Feminino</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="condicao_saude">Condição de Saúde</label>
+                <textarea id="condicao_saude" placeholder="Informe alergias, lesões ou condições médicas..."></textarea>
+              </div>
+
+
+              <div class="inline">
+                <button class="btn btn--brand" type="submit">Salvar Cadastro</button>
+                <a class="btn" href="index.html">Cancelar</a>
+              </div>
+            </form>
+          </article>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div>CCAM • Cadastro</div>
+      </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

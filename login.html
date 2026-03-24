@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CCAM - Login</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+      /* Estilo específico para centralizar o login na tela */
+      .login-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+      }
+      .login-card {
+        width: 100%;
+        max-width: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <div class="brand">
+          <span class="logo" aria-hidden="true"></span>
+          <span class="brand__text">
+            <span class="brand__name">CCAM</span>
+            <span class="brand__tag">Controle & acompanhamento</span>
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <main class="container login-container">
+      <article class="card login-card">
+        <center>
+            <h2>Acesse o Sistema</h2>
+            <p class="muted">Gerenciamento de Academia</p>
+        </center>
+        <div class="spacer"></div>
+        
+        <form id="loginForm">
+          <div class="field">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" required placeholder="seu@email.com" />
+          </div>
+
+          <div class="field">
+            <label for="password">Senha</label>
+            <input type="password" id="password" name="password" required placeholder="••••••••" />
+          </div>
+
+          <div class="spacer"></div>
+          
+          <button class="btn btn--brand" type="submit" style="width: 100%;">Entrar</button>
+
+          <p class="help" id="loginError" style="margin-top: 10px;"></p>
+          
+          <div class="help" style="text-align: center; margin-top: 4px;">
+            Acesso de demonstração: <strong>admin@ccam.com</strong> / <strong>1234</strong>
+          </div>
+
+          <div class="help" style="text-align: center; margin-top: 6px;">
+            <a href="#">Esqueceu sua senha?</a>
+          </div>
+        </form>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="container" style="text-align: center;">
+        <div>CCAM • Sistema de Gestão</div>
+      </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

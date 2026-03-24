@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CCAM - Treinos</title>
+    <meta name="description" content="Treinos no CCAM." />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a class="brand" href="index.html">
+          <span class="logo" aria-hidden="true"></span>
+          <span class="brand__text">
+            <span class="brand__name">CCAM</span>
+            <span class="brand__tag">Controle & acompanhamento</span>
+          </span>
+        </a>
+
+        <nav class="nav" data-nav aria-label="Navegação principal">
+          <a href="index.html">Início</a>
+          <a href="cadastro.html">Cadastro</a>
+          <a href="treinos.html">Treinos</a>
+          <a href="financeiro.html">Financeiro</a>
+          <a href="empresa.html">Empresa</a>
+          <a href="mural.html">Mural</a>
+          <a href="crm.html">CRM</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <section class="hero">
+          <h1>Gestão de Treinos</h1>
+          <p>Selecione exercícios do catálogo para montar a ficha personalizada do aluno.</p>
+        </section>
+
+        <section class="grid grid--2">
+          
+          <article class="card">
+            <h2>Prescrever Exercício</h2>
+            <form id="formTreino" data-enhance>
+              
+              <div class="field">
+                <label for="select-aluno">1. Selecionar Aluno *</label>
+                <select id="select-aluno" required>
+                  <option value="" disabled selected>Carregando alunos...</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>2. Exercício Selecionado *</label>
+                <div id="exercicio-display" class="display-box">
+                  Nenhum exercício selecionado (Clique no catálogo ao lado ➔)
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="field">
+                  <label for="series">Séries</label>
+                  <input id="series" type="number" placeholder="Ex: 4" required />
+                </div>
+                <div class="field">
+                  <label for="repeticoes">Repetições</label>
+                  <input id="repeticoes" type="text" placeholder="Ex: 12 a 15" required />
+                </div>
+                <div class="field">
+                  <label for="carga">Carga Sugerida</label>
+                  <input id="carga" type="text" placeholder="Ex: 20kg" required />
+                </div>
+                <div class="field">
+                  <label for="dia_semana">Dia da Semana</label>
+                  <select id="dia_semana" required>
+                    <option value="Segunda-feira">Segunda-feira</option>
+                    <option value="Terça-feira">Terça-feira</option>
+                    <option value="Quarta-feira">Quarta-feira</option>
+                    <option value="Quinta-feira">Quinta-feira</option>
+                    <option value="Sexta-feira">Sexta-feira</option>
+                    <option value="Sábado">Sábado</option>
+                    <option value="Domingo">Domingo</option>
+                    <option value="Rotativo (Ficha)">Rotativo (Ficha)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="inline" style="margin-top: 12px;">
+                <button class="btn btn--brand" type="submit">Adicionar à Ficha do Aluno</button>
+              </div>
+            </form>
+          </article>
+
+          <article class="card">
+            <h2>Catálogo de Exercícios</h2>
+            <p class="help">Clique em uma categoria para expandir e selecione o exercício desejado.</p>
+            
+            <div id="catalogo-container">
+              <div class="muted" style="text-align: center; padding: 20px;">Carregando biblioteca...</div>
+            </div>
+          </article>
+
+        </section>
+        <section class="grid">
+          <article class="card">
+            <h2>Visualizar Ficha do Aluno</h2>
+            <p class="help">Selecione um aluno no menu abaixo para auditar o treino completo cadastrado no aplicativo.</p>
+            
+            <div class="field">
+              <select id="select-aluno-view">
+                <option value="" disabled selected>Carregando alunos...</option>
+              </select>
+            </div>
+
+            <div id="treino-aluno-display" class="treino-display">
+              <p class="muted" style="text-align: center;">Nenhum aluno selecionado.</p>
+            </div>
+          </article>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div>CCAM • Treinos</div>
+      </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

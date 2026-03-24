@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CCAM - Mural</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a class="brand" href="index.html">
+          <span class="logo" aria-hidden="true"></span>
+          <span class="brand__text">
+            <span class="brand__name">CCAM</span>
+            <span class="brand__tag">Controle & acompanhamento</span>
+          </span>
+        </a>
+
+        <nav class="nav" data-nav aria-label="Navegação principal">
+          <a href="index.html">Início</a>
+          <a href="cadastro.html">Cadastro</a>
+          <a href="treinos.html">Treinos</a>
+          <a href="financeiro.html">Financeiro</a>
+          <a href="empresa.html">Empresa</a>
+          <a href="mural.html">Mural</a>
+          <a href="crm.html">CRM</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <h1>Mural de Avisos</h1>
+        <p>Novidades, comunicados e eventos da academia.</p>
+        <div class="hero__actions">
+          <button class="btn btn--brand" type="button">Publicar Novo Aviso (demo)</button>
+        </div>
+      </section>
+
+      <section class="grid grid--2">
+        <article class="card" style="border-left: 4px solid var(--brand);">
+          <h2>📢 Manutenção Programada</h2>
+          <p>A área de musculação passará por manutenção no domingo (01/03).</p>
+          <div class="spacer"></div>
+          <span class="help">Publicado em: 20/02/2026</span>
+        </article>
+
+        <article class="card">
+          <h2>🏋️ Novo Treino de Funcional</h2>
+          <p>A partir de segunda, teremos novas turmas às 07:00 com o Prof. Luís.</p>
+          <div class="spacer"></div>
+          <span class="help">Publicado em: 18/02/2026</span>
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div>CCAM • Mural de Avisos</div>
+      </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

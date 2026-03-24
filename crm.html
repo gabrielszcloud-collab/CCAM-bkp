@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CCAM - CRM</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a class="brand" href="index.html">
+          <span class="logo" aria-hidden="true"></span>
+          <span class="brand__text">
+            <span class="brand__name">CCAM</span>
+            <span class="brand__tag">Controle & acompanhamento</span>
+          </span>
+        </a>
+
+        <nav class="nav" data-nav aria-label="Navegação principal">
+          <a href="index.html">Início</a>
+          <a href="cadastro.html">Cadastro</a>
+          <a href="treinos.html">Treinos</a>
+          <a href="financeiro.html">Financeiro</a>
+          <a href="empresa.html">Empresa</a>
+          <a href="mural.html">Mural</a>
+          <a href="crm.html">CRM</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <h1>CRM - Controle Geral</h1>
+        <p>Acompanhamento de retenção, novos alunos e aniversariantes.</p>
+      </section>
+
+      <section class="grid grid--3">
+        <article class="card">
+          <h2>Visitantes / Total Geral</h2>
+          <div class="card__kpi">
+            <span class="kpi__value" id="kpi-total-alunos">...</span>
+            <span class="kpi__label">alunos ativos</span>
+          </div>
+        </article>
+        <article class="card">
+          <h2>Frequentes</h2>
+          <div class="card__kpi">
+            <span class="kpi__value" id="kpi-frequentes">0</span>
+            <span class="kpi__label">presenças/semana</span>
+          </div>
+        </article>
+        <article class="card">
+          <h2>Novatos (Mês)</h2>
+          <div class="card__kpi" style="color: var(--brand-2);">
+            <span class="kpi__value" id="kpi-novatos">...</span>
+            <span class="kpi__label">novas matrículas</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="grid grid--2">
+        <article class="card">
+          <h2>Alunos Ausentes (> 15 dias)</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Último Treino</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-ausentes">
+               <tr><td colspan="3" class="muted">Carregando dados...</td></tr>
+            </tbody>
+          </table>
+        </article>
+        
+        <article class="card">
+          <h2>Aniversariantes do Mês</h2>
+          <ul class="muted" id="lista-aniversariantes" style="list-style: none; padding: 0;">
+            <li>Carregando...</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div>CCAM • CRM</div>
+      </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

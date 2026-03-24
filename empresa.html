@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CCAM - Empresa</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a class="brand" href="index.html">
+          <span class="logo" aria-hidden="true"></span>
+          <span class="brand__text">
+            <span class="brand__name">CCAM</span>
+            <span class="brand__tag">Controle & acompanhamento</span>
+          </span>
+        </a>
+
+        <nav class="nav" data-nav aria-label="Navegação principal">
+          <a href="index.html">Início</a>
+          <a href="cadastro.html">Cadastro</a>
+          <a href="treinos.html">Treinos</a>
+          <a href="financeiro.html">Financeiro</a>
+          <a href="empresa.html">Empresa</a>
+          <a href="mural.html">Mural</a>
+          <a href="crm.html">CRM</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <h1>Dados da Empresa</h1>
+        <p>Informações institucionais e administrativas.</p>
+      </section>
+
+      <article class="card" style="max-width: 800px; margin: 20px auto;">
+        <h2>DADOS DA EMPRESA</h2>
+        <div class="grid grid--2">
+          <div class="field">
+            <label>Razão Social</label>
+            <input type="text" value="Formula Fitness Academia" disabled />
+          </div>
+          <div class="field">
+            <label>CNPJ</label>
+            <input type="text" value="02.602.237/0001-70" disabled />
+          </div>
+          <div class="field">
+            <label>Proprietário</label>
+            <input type="text" value="Jarbas Lopes de Queiroz" disabled />
+          </div>
+          <div class="field">
+            <label>Áreas de Atuação</label>
+            <input type="text" value="Musculação e Ergometria" disabled />
+          </div>
+        </div>
+        
+        <div class="spacer"></div>
+        
+        <div class="field">
+          <label>Endereço Completo</label>
+          <textarea disabled>Goiânia - GO, 2025 - Centro Universitário Unigoiás</textarea>
+        </div>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div>CCAM • Dados Institucionais</div>
+      </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>
