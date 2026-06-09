@@ -701,105 +701,105 @@
 
     carregarAvisos();
   };
-  // ==========================================
-  // LÓGICA DO FINANCEIRO (FLUXO DE CAIXA)
+ // ==========================================
+  // LÓGICA DO FINANCEIRO (MENSALIDADES DO ALUNO)
   // ==========================================
   const wireFinanceiro = async () => {
     const formFin = document.getElementById("formFinanceiro");
+    const alunoSelect = document.getElementById("aluno_select");
     const tabelaFin = document.getElementById("tabela-financeiro");
-    if (!formFin || !tabelaFin) return;
 
-    // 1. Carregar Tabela
-    const carregarMovimentacoes = async () => {
+    if (!formFin || !alunoSelect) return;
+
+    // 1. Procurar alunos para preencher o Menu (Select)
+    const carregarAlunos = async () => {
       try {
-        const { data: movs, error } = await supabaseClient
-          .from("fluxo_caixa")
-          .select("*")
-          .order("data_movimento", { ascending: false });
+        const { data: alunos, error } = await supabaseClient
+          .from("clientes")
+          .select("id, nome")
+          .order("nome");
 
-        if (error) throw error;
-
-        tabelaFin.innerHTML = "";
-
-        if (movs.length === 0) {
-          tabelaFin.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">Nenhuma movimentação registrada.</td></tr>';
-          return;
-        }
-
-        movs.forEach(mov => {
-          // Lógica de Cores (Pills)
-          const isEntrada = mov.tipo === 'entrada';
-          const pillClass = isEntrada ? 'pill--in' : 'pill--out';
-          const tipoLabel = isEntrada ? 'Entrada' : 'Saída';
-
-          // Formatação de Data e Moeda
-          const [ano, mes, dia] = mov.data_movimento.split('-');
-          const dataFormatada = `${dia}/${mes}/${ano}`;
-          const valorFormatado = parseFloat(mov.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
-          tabelaFin.innerHTML += `
-            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-              <td style="padding: 12px 0;">${dataFormatada}</td>
-              <td>${mov.descricao}</td>
-              <td><span class="pill ${pillClass}">${tipoLabel}</span></td>
-              <td style="font-weight: bold;">${valorFormatado}</td>
-              <td>
-                <button class="btn-deletar-ex btn-del-mov" data-id="${mov.id}" title="Excluir" style="background:transparent; border:none; cursor:pointer;">🗑️</button>
-              </td>
-            </tr>
-          `;
-        });
-
-        // Lógica para deletar movimentação
-        document.querySelectorAll('.btn-del-mov').forEach(btn => {
-          btn.addEventListener('click', async (e) => {
-            if (confirm("Tem certeza que deseja excluir esta movimentação?")) {
-              const id = e.currentTarget.getAttribute("data-id");
-              await supabaseClient.from("fluxo_caixa").delete().eq("id", id);
-              carregarMovimentacoes();
-            }
+        if (!error && alunos) {
+          alunoSelect.innerHTML = '<option value="" disabled selected>Escolha o aluno...</option>';
+          alunos.forEach(aluno => {
+            alunoSelect.innerHTML += `<option value="${aluno.id}">${aluno.nome}</option>`;
           });
-        });
-
-      } catch (err) { console.error("Erro financeiro:", err); }
+        }
+      } catch (err) { console.error(err); }
     };
 
-    // 2. Salvar Nova Movimentação
+    // 2. Salvar a mensalidade no banco vinculada ao aluno
     formFin.addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = formFin.querySelector('button[type="submit"]');
-      btn.textContent = "Salvando...";
-      btn.disabled = true;
+      if (btn) {
+        btn.textContent = "Salvando...";
+        btn.disabled = true;
+      }
 
-      const data_movimento = document.getElementById("fdata").value;
-      const tipo = document.getElementById("ftipo").value;
-      const descricao = document.getElementById("fdesc").value;
-
-      // Tratamento rápido para aceitar vírgula ou ponto no valor
-      let valorInput = document.getElementById("fvalor").value;
+      const cliente_id = alunoSelect.value;
+      const valorInput = document.getElementById("fin_valor").value;
+      const vencimento = document.getElementById("fin_vencimento").value;
       const valorNumerico = parseFloat(valorInput.replace(',', '.'));
 
       try {
-        const { error } = await supabaseClient.from("fluxo_caixa").insert([{
-          data_movimento,
-          tipo,
-          descricao,
-          valor: valorNumerico
-        }]);
+        const { error } = await supabaseClient.from("financeiro").insert([
+          { 
+            cliente_id, 
+            valor: valorNumerico, 
+            vencimento, 
+            status: 'Pendente' 
+          }
+        ]);
 
         if (error) throw error;
-
+        
+        alert("Mensalidade lançada com sucesso!");
         formFin.reset();
-        carregarMovimentacoes();
+        carregarHistorico();
       } catch (err) {
-        alert("Erro ao registrar: " + err.message);
+        alert("Erro ao lançar: " + err.message);
       } finally {
-        btn.textContent = "Salvar Movimentação";
-        btn.disabled = false;
+        if (btn) {
+          btn.textContent = "Gerar Cobrança";
+          btn.disabled = false;
+        }
       }
     });
 
-    carregarMovimentacoes(); // Roda ao abrir a tela
+    // 3. Mostrar o histórico na tabela do site
+    const carregarHistorico = async () => {
+      try {
+        const { data: lancamentos, error } = await supabaseClient
+          .from("financeiro")
+          .select("*, clientes(nome)")
+          .order("vencimento", { ascending: false })
+          .limit(10);
+
+        if (!error && lancamentos) {
+          if (lancamentos.length === 0) {
+            tabelaFin.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px;">Nenhuma cobrança registrada.</td></tr>';
+            return;
+          }
+
+          tabelaFin.innerHTML = lancamentos.map(l => {
+            const [ano, mes, dia] = l.vencimento.split('-');
+            const dataBR = `${dia}/${mes}/${ano}`;
+            
+            return `
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+              <td style="padding: 12px 8px;">${l.clientes?.nome || 'Excluído'}</td>
+              <td style="padding: 12px 8px;">R$ ${l.valor.toFixed(2)}</td>
+              <td style="padding: 12px 8px;">${dataBR}</td>
+              <td style="padding: 12px 8px;"><span class="pill ${l.status === 'Pago' ? 'pill--in' : 'pill--out'}">${l.status}</span></td>
+            </tr>
+          `}).join('');
+        }
+      } catch (err) { console.error(err); }
+    };
+
+    carregarAlunos();
+    carregarHistorico();
   };
 
   document.addEventListener("DOMContentLoaded", () => {

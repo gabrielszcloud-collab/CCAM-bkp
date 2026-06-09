@@ -33,66 +33,64 @@
     </div>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <h1>Financeiro</h1>
-      <p>Controle de fluxo de caixa: registre entradas (mensalidades) e saídas (despesas).</p>
-    </section>
+ <main>
+    <div class="container">
+      <section class="hero">
+        <h1>Gestão Financeira</h1>
+        <p>Lançamento de mensalidades e acompanhamento de status.</p>
+      </section>
 
-    <section class="grid grid--2">
-      <article class="card">
-        <h2>Movimentações do Mês</h2>
-        <table aria-label="Tabela de movimentações financeiras" style="width: 100%; text-align: left;">
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Descrição</th>
-              <th>Tipo</th>
-              <th>Valor</th>
-              <th>Ação</th>
-            </tr>
-          </thead>
-          <tbody id="tabela-financeiro">
-          </tbody>
-        </table>
-        <div class="spacer"></div>
-        <div class="help">Histórico completo de transações.</div>
-      </article>
+      <section class="grid grid--2">
+        
+        <article class="card">
+          <h2>Últimos Lançamentos</h2>
+          <table aria-label="Tabela de movimentações financeiras">
+            <thead>
+              <tr>
+                <th>Aluno</th>
+                <th>Valor</th>
+                <th>Vencimento</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-financeiro">
+              </tbody>
+          </table>
+          <div class="spacer"></div>
+          <div class="help">Histórico das últimas mensalidades geradas.</div>
+        </article>
 
-      <article class="card">
-        <h2>Registrar Movimentação</h2>
-        <form id="formFinanceiro" data-enhance>
-          <div class="row">
+        <article class="card" >
+          <h2>Lançar Nova Mensalidade</h2>
+          <form id="formFinanceiro" data-enhance>
+            
             <div class="field">
-              <label for="fdata">Data *</label>
-              <input id="fdata" name="data" type="date" required />
-            </div>
-            <div class="field">
-              <label for="ftipo">Tipo *</label>
-              <select id="ftipo" name="tipo" required>
-                <option value="" selected disabled>Selecione...</option>
-                <option value="entrada">Entrada</option>
-                <option value="saida">Saída</option>
+              <label for="aluno_select">Selecionar Aluno *</label>
+              <select id="aluno_select" name="aluno" required>
+                <option value="" disabled selected>Carregando alunos...</option>
               </select>
             </div>
-          </div>
 
-          <div class="field">
-            <label for="fdesc">Descrição *</label>
-            <input id="fdesc" name="descricao" required placeholder="Ex.: mensalidade, compra, aluguel..." />
-          </div>
+            <div class="row">
+              <div class="field">
+                <label for="fin_valor">Valor (R$) *</label>
+                <input type="number" id="fin_valor" step="0.01" inputmode="decimal" placeholder="Ex: 120.00" required />
+              </div>
+              
+              <div class="field">
+                <label for="fin_vencimento">Data de Vencimento *</label>
+                <input type="date" id="fin_vencimento" name="vencimento" required />
+              </div>
+            </div>
 
-          <div class="field">
-            <label for="fvalor">Valor (R$) *</label>
-            <input id="fvalor" name="valor" inputmode="decimal" required placeholder="Ex.: 120.00" />
-          </div>
+            <div class="inline">
+              <button class="btn btn--brand" type="submit">Gerar Cobrança</button>
+            </div>
+          </form>
+        </article>
 
-          <div class="inline">
-            <button class="btn btn--brand" type="submit">Salvar Movimentação</button>
-          </div>
-        </form>
-      </article>
-    </section>
+      </section>
+    </div>
   </main>
 
   <footer class="footer">
