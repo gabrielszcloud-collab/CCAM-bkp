@@ -1,67 +1,74 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>CCAM - Mural</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  </head>
-  <body>
-    <header class="topbar">
-      <div class="container topbar__inner">
-        <a class="brand" href="index.html">
-          <span class="logo" aria-hidden="true"></span>
-          <span class="brand__text">
-            <span class="brand__name">CCAM</span>
-            <span class="brand__tag">Controle & acompanhamento</span>
-          </span>
-        </a>
 
-        <nav class="nav" data-nav aria-label="Navegação principal">
-          <a href="index.html">Início</a>
-          <a href="cadastro.html">Cadastro</a>
-          <a href="treinos.html">Treinos</a>
-          <a href="financeiro.html">Financeiro</a>
-          <a href="empresa.html">Empresa</a>
-          <a href="mural.html">Mural</a>
-          <a href="crm.html">CRM</a>
-        </nav>
-      </div>
-    </header>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CCAM - Mural</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
 
-    <main class="container">
-      <section class="hero">
-        <h1>Mural de Avisos</h1>
-        <p>Novidades, comunicados e eventos da academia.</p>
-        <div class="hero__actions">
-          <button class="btn btn--brand" type="button">Publicar Novo Aviso (demo)</button>
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="index.html">
+        <span class="logo" aria-hidden="true"></span>
+        <span class="brand__text">
+          <span class="brand__name">CCAM</span>
+          <span class="brand__tag">Controle & acompanhamento</span>
+        </span>
+      </a>
+
+      <nav class="nav" data-nav aria-label="Navegação principal">
+        <a href="index.html">Início</a>
+        <a href="cadastro.html">Cadastro</a>
+        <a href="treinos.html">Treinos</a>
+        <a href="financeiro.html">Financeiro</a>
+        <a href="empresa.html">Empresa</a>
+        <a href="mural.html">Mural</a>
+        <a href="crm.html">CRM</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Mural de Avisos</h1>
+      <p>Novidades, comunicados e eventos da academia.</p>
+    </section>
+
+    <article class="card" style="margin-top: 24px; margin-bottom: 32px;">
+      <h2 style="margin-bottom: 16px;">Criar Novo Comunicado</h2>
+
+      <form id="formMural" data-enhance>
+        <div class="field">
+          <label for="aviso_titulo">Título do Aviso *</label>
+          <input type="text" id="aviso_titulo" required placeholder="Ex: Manutenção Programada" />
         </div>
-      </section>
 
-      <section class="grid grid--2">
-        <article class="card" style="border-left: 4px solid var(--brand);">
-          <h2>📢 Manutenção Programada</h2>
-          <p>A área de musculação passará por manutenção no domingo (01/03).</p>
-          <div class="spacer"></div>
-          <span class="help">Publicado em: 20/02/2026</span>
-        </article>
+        <div class="field">
+          <label for="aviso_mensagem">Mensagem *</label>
+          <textarea id="aviso_mensagem" rows="3" required placeholder="Escreva a mensagem detalhada aqui..."></textarea>
+        </div>
 
-        <article class="card">
-          <h2>🏋️ Novo Treino de Funcional</h2>
-          <p>A partir de segunda, teremos novas turmas às 07:00 com o Prof. Luís.</p>
-          <div class="spacer"></div>
-          <span class="help">Publicado em: 18/02/2026</span>
-        </article>
-      </section>
-    </main>
+        <div class="inline" style="margin-top: 16px;">
+          <button type="submit" class="btn btn--brand">Publicar Aviso</button>
+        </div>
+      </form>
+    </article>
 
-    <footer class="footer">
-      <div class="container">
-        <div>CCAM • Mural de Avisos</div>
-      </div>
-    </footer>
+    <section id="lista-avisos" class="grid grid--2">
+    </section>
+  </main>
 
-    <script src="js/script.js"></script>
-  </body>
+  <footer class="footer">
+    <div class="container">
+      <div>CCAM • Mural de Avisos</div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+
 </html>

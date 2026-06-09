@@ -1,136 +1,107 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>CCAM - Financeiro</title>
-    <meta name="description" content="Financeiro no CCAM." />
-    <link rel="stylesheet" href="css/style.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  </head>
-  <body>
-    <header class="topbar">
-      <div class="container topbar__inner">
-        <a class="brand" href="index.html">
-          <span class="logo" aria-hidden="true"></span>
-          <span class="brand__text">
-            <span class="brand__name">CCAM</span>
-            <span class="brand__tag">Controle & acompanhamento</span>
-          </span>
-        </a>
 
-        <nav class="nav" data-nav aria-label="Navegação principal">
-          <a href="index.html">Início</a>
-          <a href="cadastro.html">Cadastro</a>
-          <a href="treinos.html">Treinos</a>
-          <a href="financeiro.html">Financeiro</a>
-          <a href="empresa.html">Empresa</a>
-          <a href="mural.html">Mural</a>
-          <a href="crm.html">CRM</a>
-        </nav>
-      </div>
-    </header>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CCAM - Financeiro</title>
+  <meta name="description" content="Financeiro no CCAM." />
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
 
-    <main>
-      <div class="container">
-        <section class="hero">
-          <h1>Financeiro</h1>
-          <p>Base com tabela de movimentações e formulário (demo) para registrar entrada/saída.</p>
-        </section>
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="index.html">
+        <span class="logo" aria-hidden="true"></span>
+        <span class="brand__text">
+          <span class="brand__name">CCAM</span>
+          <span class="brand__tag">Controle & acompanhamento</span>
+        </span>
+      </a>
 
-        <section class="grid grid--2">
-          <article class="card">
-            <h2>Movimentações (exemplo)</h2>
-            <table aria-label="Tabela de movimentações financeiras">
-              <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Descrição</th>
-                  <th>Tipo</th>
-                  <th>Valor</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>2026-02-01</td>
-                  <td>Mensalidade - João</td>
-                  <td><span class="pill pill--in">Entrada</span></td>
-                  <td>R$ 120,00</td>
-                </tr>
-                <tr>
-                  <td>2026-02-05</td>
-                  <td>Compra de materiais</td>
-                  <td><span class="pill pill--out">Saída</span></td>
-                  <td>R$ 85,00</td>
-                </tr>
-                <tr>
-                  <td>2026-02-15</td>
-                  <td>Mensalidade - Maria</td>
-                  <td><span class="pill pill--in">Entrada</span></td>
-                  <td>R$ 120,00</td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="spacer"></div>
-            <div class="help">Movimentações desse mês.</div>
-          </article>
+      <nav class="nav" data-nav aria-label="Navegação principal">
+        <a href="index.html">Início</a>
+        <a href="cadastro.html">Cadastro</a>
+        <a href="treinos.html">Treinos</a>
+        <a href="financeiro.html">Financeiro</a>
+        <a href="empresa.html">Empresa</a>
+        <a href="mural.html">Mural</a>
+        <a href="crm.html">CRM</a>
+      </nav>
+    </div>
+  </header>
 
-          <article class="card">
-            <h2>Registrar movimentação (demo)</h2>
-            <form data-enhance>
-              <div class="row">
-                <div class="field">
-                  <label for="fdata">Data *</label>
-                  <input id="fdata" name="data" type="date" required />
-                </div>
-                <div class="field">
-                  <label for="ftipo">Tipo *</label>
-                  <select id="ftipo" name="tipo" required>
-                    <option value="" selected disabled>Selecione...</option>
-                    <option value="entrada">Entrada</option>
-                    <option value="saida">Saída</option>
-                  </select>
-                </div>
-              </div>
+  <main class="container">
+    <section class="hero">
+      <h1>Financeiro</h1>
+      <p>Controle de fluxo de caixa: registre entradas (mensalidades) e saídas (despesas).</p>
+    </section>
 
-              <div class="field">
-                <label for="fdesc">Descrição *</label>
-                <input id="fdesc" name="descricao" required placeholder="Ex.: mensalidade, compra, aluguel..." />
-              </div>
-
-              <div class="field">
-                <label for="fvalor">Valor (R$) *</label>
-                <input id="fvalor" name="valor" inputmode="decimal" required placeholder="Ex.: 120,00" />
-              </div>
-
-              <div class="inline">
-                <button class="btn btn--brand" type="submit">Salvar (demo)</button>
-                <a class="btn" href="dashboard.html">Voltar</a>
-                <a class="btn btn--danger" href="#" data-confirm="Limpar formulário? (demo)">Limpar</a>
-              </div>
-            </form>
-          </article>
-        </section>
-      </div>
-      <article class="card" id="listaAlunosCard" style="display: none;">
-        <h2>Selecione um Aluno para Gerenciar Treino</h2>
-        <ul style="list-style: none; padding: 0;">
-          <li style="padding: 10px; border-bottom: 1px solid var(--border); cursor: pointer;" onclick="carregarTreino('aluno@ccam.com')">
-            Jullya Moreira Dos Santos
-          </li>
-          <li style="padding: 10px; border-bottom: 1px solid var(--border); cursor: pointer;" onclick="carregarTreino('outro@exemplo.com')">
-            Luís Fernando Lopes Neves
-          </li>
-        </ul>
+    <section class="grid grid--2">
+      <article class="card">
+        <h2>Movimentações do Mês</h2>
+        <table aria-label="Tabela de movimentações financeiras" style="width: 100%; text-align: left;">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Descrição</th>
+              <th>Tipo</th>
+              <th>Valor</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-financeiro">
+          </tbody>
+        </table>
+        <div class="spacer"></div>
+        <div class="help">Histórico completo de transações.</div>
       </article>
-    </main>
 
-    <footer class="footer">
-      <div class="container">
-        <div>CCAM • Financeiro</div>
-      </div>
-    </footer>
+      <article class="card">
+        <h2>Registrar Movimentação</h2>
+        <form id="formFinanceiro" data-enhance>
+          <div class="row">
+            <div class="field">
+              <label for="fdata">Data *</label>
+              <input id="fdata" name="data" type="date" required />
+            </div>
+            <div class="field">
+              <label for="ftipo">Tipo *</label>
+              <select id="ftipo" name="tipo" required>
+                <option value="" selected disabled>Selecione...</option>
+                <option value="entrada">Entrada</option>
+                <option value="saida">Saída</option>
+              </select>
+            </div>
+          </div>
 
-    <script src="js/script.js"></script>
-  </body>
+          <div class="field">
+            <label for="fdesc">Descrição *</label>
+            <input id="fdesc" name="descricao" required placeholder="Ex.: mensalidade, compra, aluguel..." />
+          </div>
+
+          <div class="field">
+            <label for="fvalor">Valor (R$) *</label>
+            <input id="fvalor" name="valor" inputmode="decimal" required placeholder="Ex.: 120.00" />
+          </div>
+
+          <div class="inline">
+            <button class="btn btn--brand" type="submit">Salvar Movimentação</button>
+          </div>
+        </form>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div>CCAM • Financeiro</div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+
 </html>
