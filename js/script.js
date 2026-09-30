@@ -174,6 +174,179 @@
     });
   };
 
+  // --- INTEGRAÇÃO JAVA: TREINO (CATÁLOGO) ---
+  const wireTreinoForm = async () => {
+    const selectAluno = document.getElementById("select-aluno");
+    const formTreino = document.getElementById("formTreino");
+    const catalogoContainer = document.getElementById("catalogo-container");
+    const exercicioDisplay = document.getElementById("exercicio-display");
+    if (!selectAluno || !formTreino || !catalogoContainer) return;
+
+    let catalogoCompleto = [];
+    let idExercicioSelecionado = null;
+
+    // 1. Carregar Alunos
+    try {
+      const res = await fetch(`${API_URL}/clientes`);
+      const alunos = await res.json();
+      selectAluno.innerHTML = '<option value="" disabled selected>Selecione um aluno...</option>';
+      alunos.forEach(a => selectAluno.innerHTML += `<option value="${a.id}">${a.nome}</option>`);
+    } catch (err) { console.error("Erro alunos:", err); }
+
+    // 2. Carregar Catálogo
+    try {
+      const res = await fetch(`${API_URL}/catalogo`);
+      const catalogo = await res.json();
+      catalogoCompleto = catalogo;
+      catalogoContainer.innerHTML = '';
+      
+      const grupos = {};
+      catalogo.forEach(ex => {
+        if (!grupos[ex.grupoMuscular]) grupos[ex.grupoMuscular] = [];
+        grupos[ex.grupoMuscular].push(ex);
+      });
+
+      for (const [grupo, exercicios] of Object.entries(grupos)) {
+        let htmlGrupo = `<details><summary> ${grupo.toUpperCase()}</summary><ul style="list-style: none; padding: 0; margin: 0 0 10px 0;">`;
+        exercicios.forEach(ex => {
+          htmlGrupo += `<li class="exercicio-item" data-id="${ex.id}">▸ ${ex.nome}</li>`;
+        });
+        catalogoContainer.innerHTML += htmlGrupo + `</ul></details>`;
+      }
+
+      document.querySelectorAll('.exercicio-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          document.querySelectorAll('.exercicio-item').forEach(el => el.classList.remove('selecionado'));
+          e.target.classList.add('selecionado');
+          idExercicioSelecionado = e.target.getAttribute('data-id');
+          const exData = catalogoCompleto.find(x => x.id == idExercicioSelecionado);
+          if (exercicioDisplay) {
+            exercicioDisplay.innerHTML = `<span style="color: #fff;"><strong>[${exData.grupoMuscular}]</strong> ${exData.nome}</span>`;
+            exercicioDisplay.style.background = "rgba(156, 39, 176, 0.1)";
+          }
+        });
+      });
+    } catch (err) { console.error("Erro catálogo:", err); }
+
+    // 3. Salvar Prescrição
+    formTreino.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!idExercicioSelecionado) return alert("⚠️ Selecione um exercício do catálogo.");
+
+      const btn = formTreino.querySelector('button[type="submit"]');
+      btn.disabled = true; btn.textContent = "Salvando...";
+
+      try {
+        const dadosCat = catalogoCompleto.find(ex => ex.id == idExercicioSelecionado);
+        const prescricao = {
+          clienteId: selectAluno.value,
+          grupoMuscular: dadosCat.grupoMuscular,
+          nomeExercicio: dadosCat.nome,
+          imagemUrl: dadosCat.imagemUrl,
+          series: parseInt(document.getElementById("series").value) || 0,
+          repeticoes: document.getElementById("repeticoes").value,
+          carga: document.getElementById("carga").value,
+          diaSemana: document.getElementById("dia_semana")?.value || "Geral"
+        };
+
+        const res = await fetch(`${API_URL}/exercicios`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(prescricao)
+        });
+        
+        if (!res.ok) throw new Error("Erro no servidor");
+        alert("✅ Exercício adicionado à ficha!");
+        formTreino.reset();
+      } catch (err) {
+        alert("Erro ao salvar: " + err.message);
+      } finally {
+        btn.disabled = false; btn.textContent = "Adicionar à Ficha do Aluno";
+      }
+    });
+  };
+
+  // --- INTEGRAÇÃO JAVA: VISUALIZAR TREINOS (PARTE INFERIOR DA TELA) ---
+  const wireVisualizarTreinos = async () => {
+    const selectView = document.getElementById("select-aluno-view");
+    const displayDiv = document.getElementById("treino-aluno-display");
+
+    if (!selectView || !displayDiv) return;
+
+    // 1. Carregar alunos no select de baixo
+    try {
+      const res = await fetch(`${API_URL}/clientes`);
+      const alunos = await res.json();
+      if (alunos && alunos.length > 0) {
+        selectView.innerHTML = '<option value="" disabled selected>Escolha um aluno para ver a ficha...</option>';
+        alunos.forEach(a => selectView.innerHTML += `<option value="${a.id}">${a.nome}</option>`);
+      } else {
+        selectView.innerHTML = '<option value="" disabled>Nenhum aluno cadastrado no sistema</option>';
+      }
+    } catch (err) { 
+      console.error("Erro alunos visualização:", err); 
+      selectView.innerHTML = '<option value="" disabled>Erro ao carregar alunos.</option>';
+    }
+
+    // 2. Buscar ficha ao selecionar o aluno
+    selectView.addEventListener("change", async (e) => {
+      const alunoId = e.target.value;
+      displayDiv.innerHTML = '<p class="msg-info">Buscando ficha no banco de dados local...</p>';
+
+      try {
+        const res = await fetch(`${API_URL}/exercicios/aluno/${alunoId}`);
+        if (!res.ok) throw new Error("Erro ao buscar a ficha");
+        
+        const treinos = await res.json();
+
+        if (!treinos || treinos.length === 0) {
+          displayDiv.innerHTML = '<p class="msg-erro">Este aluno ainda não possui exercícios na ficha.</p>';
+          return;
+        }
+
+        // Agrupando exercícios por Categoria (Grupo Muscular) como era no Supabase
+        const gruposDetalhados = {};
+        treinos.forEach(ex => {
+          const grupo = ex.grupoMuscular || 'Geral';
+          if (!gruposDetalhados[grupo]) gruposDetalhados[grupo] = [];
+          gruposDetalhados[grupo].push(ex);
+        });
+
+        // Aplicando as classes do seu CSS original
+        let htmlFicha = `<h3 class="ficha-titulo">Ficha do Aluno</h3>`;
+
+        for (const [grupo, exercicios] of Object.entries(gruposDetalhados)) {
+          htmlFicha += `
+            <div class="ficha-grupo">
+              <h4 class="muted" style="margin: 0 0 10px 0;">▸ Categoria: ${grupo.toUpperCase()}</h4>
+              <div class="grid grid--3">
+          `;
+
+          exercicios.forEach(ex => {
+            htmlFicha += `
+              <div class="ficha-card" data-id="${ex.id}">
+                <div class="view-mode">
+                  <span class="ficha-card-nome">${ex.nomeExercicio}</span>
+                  <div class="ficha-card-detalhes">
+                    <div>📅 ${ex.diaSemana || 'Geral'}</div> 
+                    <div>🔄 ${ex.series} séries de ${ex.repeticoes}</div>
+                    <div>⚖️ Carga: ${ex.carga || 'Livre'}</div>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          htmlFicha += `</div></div>`;
+        }
+
+        displayDiv.innerHTML = htmlFicha;
+
+      } catch (err) {
+        displayDiv.innerHTML = `<p class="msg-erro">Erro ao carregar a ficha: ${err.message}</p>`;
+      }
+    });
+  };
+
   // --- INTEGRAÇÃO JAVA: MURAL DE AVISOS ---
   const wireMural = async () => {
     const formMural = document.getElementById("formMural");
@@ -241,7 +414,7 @@
     } catch (err) { console.error("Erro CRM:", err); }
   };
 
-  document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
     enforceAuth();
     wireLoginForm();
     setActiveNav();
@@ -253,5 +426,9 @@
     wireCadastroForm();
     wireMural();
     loadCRMData();
+    
+    // Ativando a tela de treinos!
+    wireTreinoForm();
+    wireVisualizarTreinos();
   });
 })();
