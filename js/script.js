@@ -142,14 +142,20 @@
       const btnSalvar = form.querySelector('button[type="submit"]');
       if (btnSalvar) { btnSalvar.textContent = "Salvando..."; btnSalvar.disabled = true; }
 
-      const peso = parseFloat(document.getElementById("peso")?.value) || 0;
-      
+      const valor = (id) => document.getElementById(id)?.value.trim() || null;
+      const numero = (id) => parseFloat(document.getElementById(id)?.value) || null;
+
       const dadosCliente = {
-        nome: document.getElementById("nome")?.value.trim(),
-        email: document.getElementById("email")?.value.trim(),
-        cpf: document.getElementById("cpf")?.value.trim(),
-        telefone: document.getElementById("celular")?.value.trim(),
-        peso: peso || null
+        nome: valor("nome"),
+        email: valor("email"),
+        cpf: valor("cpf"),
+        telefone: valor("celular"),
+        telefoneFixo: valor("telefone_fixo"),
+        dataNascimento: valor("data_nascimento"), // "AAAA-MM-DD" ou null
+        peso: numero("peso"),
+        altura: numero("altura"),
+        sexo: valor("sexo"),
+        condicaoSaude: valor("condicao_saude")
       };
 
       try {
