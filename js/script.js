@@ -6,8 +6,10 @@
   };
   const getPath = () => (location.pathname || "").split("/").pop() || "index.html";
 
-  // API LOCAL DO JAVA
-  const API_URL = "http://localhost:8081/api";
+  // API: local no seu PC, nuvem (Render) quando o site está publicado
+  const API_URL = (["localhost", "127.0.0.1", ""].includes(location.hostname))
+    ? "http://localhost:8081/api"
+    : "https://ccam-2-0.onrender.com/api";
 
   const safeJsonParse = (raw) => { try { return JSON.parse(raw); } catch { return null; } };
   const getWindowNameSession = () => {
